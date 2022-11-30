@@ -1,3 +1,14 @@
+<?php 
+$contacts = [
+      ["name" => "Pepe", "phone_number" => "1234435345456"],
+      ["name" => "Juan", "phone_number" => "454345156"],
+      ["name" => "Nate", "phone_number" => "90990908"],
+      ["name" => "Sofia", "phone_number" => "90908"],
+      ["name" => "Maria", "phone_number" => "92108"]   
+  ];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,41 +60,19 @@
   <main>
     <div class="container pt-4 p-3">
       <div class="row">
-        <?php foreach ($contacts as $contact): ?>
-          <div class="col-md-4 mb-3">
-            <div class="card text-center">
-              <div class="card-body">
-                <h3 class="card-title text-capitalize">Contact Name 1</h3>
-                <p class="m-2">09854544567</p>
-                <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
-              </div>
-            </div>
-          </div>
 
-          <div class="col-md-4 mb-3">
+      <?php foreach ($contacts as $contact):  ?>
+        <div class="col-md-4 mb-3">
             <div class="card text-center">
               <div class="card-body">
-                <h3 class="card-title text-capitalize">Contact Name 2</h3>
-                <p class="m-2">09854544567</p>
-                <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4 mb-3">
-            <div class="card text-center">
-              <div class="card-body">
-                <h3 class="card-title text-capitalize">Contact Name 3</h3>
-                <p class="m-2">09854544567</p>
+                <h3 class="card-title text-capitalize"><?= $contact["name"] ?></h3>
+                <p class="m-2"><?= $contact["phone_number"] ?></p>
                 <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
                 <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
               </div>
             </div>
           </div>
         <?php endforeach ?>
-
       </div>
     </div>
   </main>
