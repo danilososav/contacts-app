@@ -2,6 +2,19 @@
 
 require "database.php";
 
+$id = $_GET["id"];
+
+$statament = $conn->prepare("SELECT *  FROM contacts WHERE id = :id LIMIT 1");
+$statament->execute([":id" => $id]); 
+
+if($statament->rowCount() == 0) {
+  http_response_code(404);
+  echo("HTTP 404 NOT FOUND");
+  return;
+}
+
+$contact = $statament->fetch(PDO::FETCH_ASSOC);
+
 $error = null;
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,10 +27,13 @@ $error = null;
     $name = $_POST["name"];
     $phoneNumber = $_POST["phone_number"];
 
-    $statament = $conn->prepare("INSERT INTO contacts (name, phone_number) VALUES (:name, :phone_number)");
-    $statament->bindParam(":name", $_POST["name"]);
-    $statament->bindParam(":phone_number", $_POST["phone_number"]);
-    $statament->execute();
+    $statament = $conn->prepare("UPDATE contacts SET name = :name, phone_number = :phone_number WHERE id = :id");
+    $statament->execute([
+      ":id" => $id,
+      ":name" => $_POST["name"],
+      ":phone_number" => $_POST["phone_number"],
+    ]);
+    
 
     header("Location: index.php");
     }
@@ -32,13 +48,13 @@ $error = null;
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.2/darkly/bootstrap.min.css"
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/aootstrap.min.css"
    integrity="sha512-8RiGzgobZQmqqqJYja5KJzl9RHkThtwqP1wkqvcbbbHNeMXJjTaBOR+6OeuoxHhuDN5h/VlgVEjD7mJu6KNQXA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
      crossorigin="anonymous"></script>
-   <!-- Static Content -->
+   <!-- Static Contentjax/libs/bootswatch/5.2.2/darkly/b -->
    <link rel="stylesheet" href="./static/css/index.css"/>
   <title>CONTACTS APP</title>
 </head>
@@ -86,12 +102,12 @@ $error = null;
                   <?= $error ?>
                 </p>
               <?php endif ?>
-              <form method="post" action="add.php">
-                <div class="mb-3 row">
+              <form method="post" action="edit.php?id=<?= $contact["id"] ?>">
+                <div class="mb-3 row"></div>
                   <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
     
                   <div class="col-md-6">
-                    <input id="name" type="text" class="form-control" name="name" autocomplete="name" autofocus>
+                    <input value="<?= $contact["name"] ?>" id="name" type="text" class="form-control" name="name" autocomplete="name" autofocus>
                   </div>
                 </div>
     
@@ -99,7 +115,7 @@ $error = null;
                   <label for="phone_number" class="col-md-4 col-form-label text-md-end">Phone Number</label>
     
                   <div class="col-md-6">
-                    <input id="phone_number" type="tel" class="form-control" name="phone_number" autocomplete="phone_number" autofocus>
+                    <input value="<?= $contact["phone_number"] ?>" id="phone_number" type="tel" class="form-control" name="phone_number" autocomplete="phone_number" autofocus>
                   </div>
                 </div>
     
