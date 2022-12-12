@@ -35,7 +35,7 @@ $error = null;
     ]);
     
 
-    header("Location: index.php");
+    header("Location: home.php");
     }
         
   } 

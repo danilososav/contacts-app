@@ -19,7 +19,7 @@ $error = null;
     $statament->bindParam(":phone_number", $_POST["phone_number"]);
     $statament->execute();
 
-    header("Location: index.php");
+    header("Location: home.php");
     }
         
   } 
